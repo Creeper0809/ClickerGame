@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : Poolable
+public class Bullet : MonoBehaviour
 {
     float power = 1000f;
     Rigidbody2D rb2d;
@@ -18,7 +18,9 @@ public class Bullet : Poolable
     }
     private void OnBecameInvisible()
     {
-        Debug.Log("안보임");
-        Push();
+        if (gameObject.activeSelf)
+        {
+            ObjectPoolManager.Instance.Despawn(transform.gameObject);
+        }
     }
 }

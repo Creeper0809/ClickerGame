@@ -26,7 +26,6 @@ public class ObjectPool : MonoBehaviour
     }
     public GameObject Pop()
     {
-        Debug.Log("총알 생성");
         Poolable obj = poolStack.Pop();
         obj.gameObject.SetActive(true);
         return obj.gameObject;
