@@ -1,45 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TabController : MonoBehaviour
 {
     private static TabController _instance = null;
-
-    public static TabController Instance
+    public List<TabButton> tabButtons;
+    public TabButton selectedTab;
+    public List<GameObject> tab;
+    public void Subscribe(TabButton button)
     {
-        get
+        if(tabButtons == null)
         {
-            if (_instance == null)
+            tabButtons = new List<TabButton>();
+        }
+        tabButtons.Add(button);
+    }
+    public void OnTabSelected(TabButton button)
+    {
+        selectedTab = button;
+        RessetTabs();
+        button.background.color = new Color(255, 255, 255, 0);
+        int index = button.transform.GetSiblingIndex();
+        for(int i = 0; i < tab.Count; i++)
+        {
+            if(i == index)
             {
-                GameObject.FindObjectOfType<TabController>();
-
-                if (_instance == null)
-                {
-                    Debug.LogError("There's no active TabController object");
-                }
+                tab[i].SetActive(true);
             }
-            return _instance;
+            else
+            {
+                tab[i].SetActive(false);
+            }
         }
     }
-
-    TabButton tabButton;
-
-    private void Start()
+    public void RessetTabs()
     {
-        SelectedButton(transform.GetChild(0).GetComponent<TabButton>());
-    }
-
-    public void SelectedButton(TabButton _button)
-    {
-
-        if (tabButton != null)
+        foreach (TabButton button in tabButtons)
         {
-            tabButton.Deselect();
+            if (selectedTab != null && button == selectedTab) { continue; }
+            button.background.color = new Color(255, 255, 255, 255);
         }
-
-        tabButton = _button;
-        tabButton.Select();
     }
 
 }

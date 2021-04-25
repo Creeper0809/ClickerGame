@@ -1,13 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
-
-public class TabButton : MonoBehaviour
+using UnityEngine.EventSystems;
+[RequireComponent(typeof(Image))]
+public class TabButton : MonoBehaviour,IPointerClickHandler
 {
+    public TabController tabGroup;
+    public Image background;
     public UnityEvent onTabSelected;
     public UnityEvent onTabDeselected;
-
+    private void Start()
+    {
+        background = GetComponent<Image>();
+        tabGroup.Subscribe(this);
+    }
     public void Select()
     {
         if (onTabSelected != null)
@@ -24,8 +32,8 @@ public class TabButton : MonoBehaviour
         }
     }
 
-    public void OnSelectTab(TabButton button)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        TabController.Instance.SelectedButton(button);
+        tabGroup.OnTabSelected(this);
     }
 }

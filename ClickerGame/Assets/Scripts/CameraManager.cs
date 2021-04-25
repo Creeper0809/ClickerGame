@@ -11,9 +11,10 @@ public class CameraManager : MonoBehaviour
         rect.width = 1;
         rect.height = 1;
         camera.rect = rect;
-        Screen.SetResolution(720, 1280, false);
+        Screen.SetResolution(720, 1280, true);
+        Screen.fullScreen = true;
+        DisableSystemUI.DisableNavUI();
     }
-    // Start is called before the first frame update
     void Start()
     {
         

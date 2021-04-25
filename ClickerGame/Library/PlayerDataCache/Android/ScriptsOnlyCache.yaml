@@ -1,11 +1,15 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - Boss
     - Bullet
     - CameraManager
-    - Enemy
+    - ClearCheck
+    - FadeInControllor
+    - IngameUIManager
     - ObjectPoolManager
     - Player
+    - StageManager
     - TabButton
     - TabController
     Unity.2D.Animation.Editor.dll:
@@ -36,7 +40,6 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
-    - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/Scenes/SampleScene.unity:
@@ -81,31 +84,37 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12452}
     - Class: 114
+      Script: {instanceID: 12594}
+    - Class: 114
       Script: {instanceID: 12632}
     - Class: 114
       Script: {instanceID: 12826}
     - Class: 114
-      Script: {instanceID: 12986}
+      Script: {instanceID: 12988}
     - Class: 114
-      Script: {instanceID: 13132}
+      Script: {instanceID: 13100}
     - Class: 114
-      Script: {instanceID: 13330}
+      Script: {instanceID: 13136}
     - Class: 114
-      Script: {instanceID: 13752}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 14364}
+      Script: {instanceID: 13518}
     - Class: 114
-      Script: {instanceID: 14384}
+      Script: {instanceID: 13762}
     - Class: 114
-      Script: {instanceID: 14406}
+      Script: {instanceID: 14380}
     - Class: 114
-      Script: {instanceID: 31334}
+      Script: {instanceID: 14422}
     - Class: 114
-      Script: {instanceID: 31340}
+      Script: {instanceID: 14448}
     - Class: 114
-      Script: {instanceID: 68442}
+      Script: {instanceID: 111016}
     - Class: 114
-      Script: {instanceID: 90288}
+      Script: {instanceID: 111024}
+    - Class: 114
+      Script: {instanceID: 115864}
+    - Class: 114
+      Script: {instanceID: 127690}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -235,7 +244,7 @@ ScriptsOnlyBuild:
     className: SpriteShapeGeometryCache
   - hash:
       serializedVersion: 2
-      Hash: 3b43f71db434caedf0e77789693d904d
+      Hash: c984c64ce2463a5a4fe93cb5b920eb33
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -379,6 +388,12 @@ ScriptsOnlyBuild:
     className: Bullet
   - hash:
       serializedVersion: 2
+      Hash: 63281a322de36c40c10e658331cf9e25
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TabController
+  - hash:
+      serializedVersion: 2
       Hash: d4020bafcd3ccbb5601a6e6c8ac78be0
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -436,13 +451,19 @@ ScriptsOnlyBuild:
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Poolable
+    className: IngameUIManager
   - hash:
       serializedVersion: 2
       Hash: 5ad4aa237d47ac2bab17bacb672edf7a
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: VerticalLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: 89fd3deb2cd950eeb4376a8b66e7c2aa
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: AutoPool
+    className: AP_Pool
   - hash:
       serializedVersion: 2
       Hash: 71b711096c6c32621c1d4c02310898b7
@@ -505,10 +526,16 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 829ad35d96b845b5a4c4028a97f598ed
+      Hash: e910332b208fcafef625cad4ece7315d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: AutoPool
+    className: AP_Manager
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ObjectPool
+    className: ObjectPoolManager
   - hash:
       serializedVersion: 2
       Hash: 6939772cb3ce775a8e8d99f332534491
@@ -545,6 +572,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_StyleSheet
+  - hash:
+      serializedVersion: 2
+      Hash: daaac0252fd6b4446d1a0010b3c1cd64
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: AutoPool
+    className: AP_Reference
   - hash:
       serializedVersion: 2
       Hash: 8cd1cbba27f3cb1717254f668e9e0d5a
@@ -637,6 +670,12 @@ ScriptsOnlyBuild:
     className: ToggleGroup
   - hash:
       serializedVersion: 2
+      Hash: 4e9080e2475d08d8b87079f01698a6dd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TabButton
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -646,44 +685,26 @@ ScriptsOnlyBuild:
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: TabController
+    className: ClearCheck
   - hash:
       serializedVersion: 2
-      Hash: 3f093493229939853109b1f55bdc6a4b
+      Hash: 5336b7e6b20e96db94f69ba82499db70
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: TabButton
+    className: StageManager
   - hash:
       serializedVersion: 2
-      Hash: 3b43f71db434caedf0e77789693d904d
+      Hash: dddfa09c895fa9b932e97939b856fff8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Enemy
-  - hash:
-      serializedVersion: 2
-      Hash: 89fd3deb2cd950eeb4376a8b66e7c2aa
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: AutoPool
-    className: AP_Pool
-  - hash:
-      serializedVersion: 2
-      Hash: e910332b208fcafef625cad4ece7315d
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: AutoPool
-    className: AP_Manager
+    className: Boss
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ObjectPoolManager
-  - hash:
-      serializedVersion: 2
-      Hash: daaac0252fd6b4446d1a0010b3c1cd64
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: AutoPool
-    className: AP_Reference
+    className: FadeInControllor
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/creep/Desktop/DD.apk
+  playerPath: C:/Users/creep/Desktop/Dev-0.0.6.apk
