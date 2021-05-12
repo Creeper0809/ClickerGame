@@ -14,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - CardSpawnArea
   - 
   - 
   - 
@@ -43,4 +43,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1703773191
+    locked: 0
+  - name: UI
+    uniqueID: 2021835069
+    locked: 0
+  - name: Entity
+    uniqueID: 3612061705
+    locked: 0
+  - name: Player
+    uniqueID: 1182871757
     locked: 0

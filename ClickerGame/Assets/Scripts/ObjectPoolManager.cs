@@ -165,7 +165,24 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             return result;
         }
     }
-
+    public GameObject getPool(string name, Transform parentNode)
+    {
+        GameObject obj = Spawn(name, parentNode);
+        if (obj == null)
+        {
+            GameObject prefab = (GameObject)Resources.Load("prefab/" + name);
+            if (prefab == null)
+            {
+                Debug.Log("Failed Load Prefab : " + name);
+                return null;
+            }
+            if (InitializeSpawn(prefab, 5, 20))
+            {
+                obj = Spawn(prefab.name, parentNode);
+            }
+        }
+        return obj;
+    }
     public bool RemoveAll()
     {
         if (apManagerScript == null)

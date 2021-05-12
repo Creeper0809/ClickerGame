@@ -1,103 +1,106 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Player : Character
 {
-    public GameObject shootPos;
-    public bool isClicked = false;
-    public float firerate = 1f;
-    public float timer;
-    public bool isInRange = false;
-    public float velocity = 0.1f;
-    
-    Transform me = null;
-    float range = 100f;
-    LayerMask layerMask;
-    private CircleCollider2D boxCollider;
-    Transform target = null;
-    private void Start()
+    public GameObject HpUIText;
+    public TMP_Text manaText;
+    private static Player instance;
+    public Vector3 playerPos;
+    protected float manaTimer;
+    protected float manaRegeneration = 2f;
+    void Awake()
     {
-        boxCollider = GetComponent<CircleCollider2D>();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (Constants.isPaused == true) return;
-        if (firerate > timer)
+        if (null == instance)
         {
-            timer += Time.deltaTime;
-            return;
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
-        if (isInRange)
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    public static Player Instance
+    {
+        get
+        {
+            if (null == instance)
+            {
+                return null;
+            }
+            return instance;
+        }
+    }
+
+    public Player()
+    {
+        MaxMp = 10;
+        MaxHp = 1000;
+        velocity = 3f;
+        firerate = 0.3f;
+        range = 2f;
+    }
+    protected override void Start()
+    {
+        base.Start();
+    }
+    protected override void Update()
+    {
+        base.Update();
+        manaText.text = NowMp.ToString();
+        playerPos = gameObject.transform.position;
+        HpUIText.GetComponent<Text>().text = "HP:" + NowHp + "/" + MaxHp;
+        fireRateTimer += Time.deltaTime;
+        if (manaRegeneration < manaTimer && NowMp <MaxMp)
+        {
+            NowMp++;
+            manaTimer = 0;
+        }
+        else if(NowMp == MaxMp)
+        {
+            manaTimer = 0;
+        }
+        else
+        {
+            manaTimer += Time.deltaTime;
+        }
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, range, LayerMask.GetMask("Enemy"));
+        if (hit)
         {
             Fire();
             return;
         }
         Vector3 vector = Vector3.right;
-        RaycastHit2D hit;
-        Vector2 start = transform.position;
-        Vector2 end = start + new Vector2(vector.x, vector.y);
-        boxCollider.enabled = false;
-        hit = Physics2D.Linecast(start, end, layerMask);
-        boxCollider.enabled = true;
-        if (hit.transform != null)
-        {
-            return;
-        }
         transform.Translate(vector * velocity * Time.deltaTime);
+    }
+    public void UseMana(int howMany)
+    {
+        NowMp -= howMany;
     }
     public void Fire()
     {
-        if (firerate > timer)
+        if (firerate > fireRateTimer)
         {
             return;
         }
-        GameObject obj = createBullet("Bullet", transform);
+        GameObject obj = ObjectPoolManager.Instance.getPool("Bullet", transform);
         obj.transform.rotation = Quaternion.Euler(0, 0, 270);
-        obj.transform.position = shootPos.transform.position;
+        obj.transform.position = this.transform.position;
         obj.transform.localScale = new Vector3(1, 1, 1);
-        timer = 0.0f;
+        fireRateTimer = 0.0f;
     }
-    private GameObject createBullet(string name,Transform parentNode)
+    public override void die()
     {
-        GameObject obj = ObjectPoolManager.Instance.Spawn(name, parentNode);
-        if (obj == null) 
-        {
-            GameObject prefab = (GameObject)Resources.Load(name);
-            if (prefab == null)
-            {
-                Debug.Log("Failed Load Prefab : " + name);
-                return null;
-            }
-            if (ObjectPoolManager.Instance.InitializeSpawn(prefab, 5, 20))
-            { 
-                obj = ObjectPoolManager.Instance.Spawn(prefab.name, parentNode);
-            }
-        }
-        return obj;
+        gameObject.SetActive(false);
+        Constants.isPaused = true;
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    public float getNowMp()
     {
-        if (other.tag == "enemy")
-        {
-            isInRange = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.tag == "enemy")
-        {
-            isInRange = false;
-        }
-    }
-
-    public override void ResetStat()
-    {
-        HP = 1000f;
-        MaxHP = 1000f;
-        TakeDamage(0);
+        return NowMp;
     }
 }

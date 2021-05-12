@@ -9,7 +9,11 @@ public class ClearCheck : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            StageManager.Instance.Clear();
+            if (!Constants.isCleared)
+            {
+                Debug.Log("플레이어 닿음");
+                StageManager.Instance.Clear();
+            }
         }
     }
 }

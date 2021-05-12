@@ -13,30 +13,55 @@ public class StageManager : Singleton<StageManager>
 
     public GameObject Enemy;
     public GameObject EnemySpawnPos;
-    int stage = 1;
+
+    public GameObject MobParent;
+    public List<GameObject> mobs;
+    public int trashMobCount = 10;
+    float timer = 0f;
+    protected StageManager() { }
     private void Start()
     {
-        IngameUIManager.Instance.UpdateStage(stageText, stage);
+        Constants.stage = PlayerPrefs.GetInt("stage");
+        if (Constants.stage == 0)
+        {
+            Constants.stage++;
+        }
+        IngameManager.Instance.UpdateStage(stageText, Constants.stage);
+        MobParent = GameObject.Find("TrashMobs");
+        CreateMob(20);
+    }
+    public void CreateMob(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            GameObject obj = ObjectPoolManager.Instance.getPool("TrashMob", MobParent.transform);
+            mobs.Add(obj);
+            obj.GetComponent<TrashMob>().Player = GameObject.FindGameObjectWithTag("Player");
+            obj.GetComponent<TrashMob>().velocity = Random.RandomRange(1f, 3f);
+            float objY = Random.RandomRange(-0.45f, -0.1f);
+            obj.transform.position = new Vector3(EnemySpawnPos.transform.position.x, objY, 0);
+        }
     }
     public void Clear()
     {
-        stage++;
+        Constants.stage++;
+        Constants.isPaused = true;
+        Debug.Log(Constants.stage);
+        foreach (GameObject iter in mobs)
+        {
+            ObjectPoolManager.Instance.Despawn(iter);
+        }
         StartCoroutine(FadeInDadeOut());
     }
     IEnumerator FadeInDadeOut()
     {
-        Constants.isPaused = true;
-        fade.FadeIn(1f);
+        fade.FadeIn(2f);
         yield return new WaitForSeconds(1f);
-        fade.FadeOut(1f);
-        createEnemy();
-        IngameUIManager.Instance.UpdateStage(stageText, stage);
-        Constants.isPaused = false;
+        fade.FadeOut(2f);
+        CreateMob(Random.RandomRange(10,20));
+        IngameManager.Instance.UpdateStage(stageText, Constants.stage);
         player.transform.position = playerSpawnPos.transform.localPosition;
-    }
-    public void createEnemy()
-    {
-        Enemy.SetActive(true);
-        Enemy.GetComponent<Enemy>().ResetStat();
+        Constants.isPaused = false;
+        Constants.isCleared = false;
     }
 }
