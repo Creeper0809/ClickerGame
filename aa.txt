@@ -1,0 +1,31 @@
+package Test;
+
+import java.util.Scanner;
+
+public class p1 {
+
+   public static void main(String[] args) {
+      Scanner sc = new Scanner(System.in);
+      String arg1 = sc.nextLine();
+      String arg2 = sc.nextLine();
+      int space = sc.nextInt();
+      int num = arg1.length() < arg2.length() ? arg1.length() / space : arg2.length() / space;
+      StringBuilder sb = new StringBuilder();
+      if (arg1.length()>1000||arg2.length()>1000||space<=0 || arg1.contains(" ") || arg2.contains(" ")) {
+    	  return;
+      }
+      for (int i = 0; i < num; i++) {
+         sb.append(arg1.substring(0, space));
+         arg1 = arg1.substring(space, arg1.length());
+         sb.append(arg2.substring(0, space));
+         arg2 = arg2.substring(space, arg2.length());
+      }
+      if (arg1.length() < space) {
+         sb.append(arg1 + arg2);
+      } else {
+         sb.append(arg1.substring(0, space) + arg2 + arg1.substring(space, arg1.length()));
+      }
+      System.out.println(sb.toString());
+   }
+
+}
