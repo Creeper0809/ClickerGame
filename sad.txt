@@ -1,0 +1,32 @@
+package java2;
+import java.util.Scanner;
+public class plusminus {
+   public static void main(String[] args) {   
+      Scanner in = new Scanner(System.in);
+      String s1 = in.nextLine();
+      String s2 = in.nextLine();
+      int ka = in.nextInt();
+      int min = 0;
+      if(s1.length() <= s2.length()) min = s1.length();
+      else min = s2.length();
+      for (int a = 0; a <= s1.length() && a <= s2.length(); a = a + ka) {
+            if (s1.length() >= a + ka && s2.length() >= a + ka) {
+               System.out.print(s1.substring(a, a + ka));
+               System.out.print(s2.substring(a, a + ka));
+               
+            } else if (s1.length() >= a + ka && s2.length() <= a + ka) {
+               System.out.print(s1.substring(a, s1.length()));
+               System.out.print(s2.substring(a, s2.length()));
+               
+            } else if (s1.length() <= a + ka && s2.length() >= a + ka) {
+               System.out.print(s1.substring(a, s1.length()));
+               System.out.print(s2.substring(a, s2.length()));
+               
+            } else if (s1.length() <= a + ka &&s2.length() <= a + ka) {
+               System.out.print(s1.substring(a, s1.length()));
+               System.out.print(s2.substring(a, s2.length()));
+            }
+      }
+      in.close();
+   }
+}         
